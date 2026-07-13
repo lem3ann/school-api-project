@@ -19,5 +19,5 @@ export const admins = [
     adminId: "eb295cdd-3aa7-4bdb-9329-65fcb827e353",
     username: "Jala",
     password: "123456",
-  },
+  }
 ];

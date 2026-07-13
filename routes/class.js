@@ -43,7 +43,7 @@ router.get("/all/class/:classId", (req, res) => {
 // =============================== DELETE A SPECIFIC CLASS ===========================================
 router.delete("/class/deleteClass/:classId", (req, res) => {
   const { classId } = req.params;
-  const currentClass = dbClass.filter((u) => u.id !== classId);
+  const currentClass = dbClass.filter((u) => u.id === classId);
   return res.send(currentClass);
 });
 

@@ -1,8 +1,14 @@
 import express from "express";
-import { admins } from "../database/admins";
+import { admins } from "../database/admins.js";
+import studentSchema from "../validations/student-schema.js";
+import { dbStudents } from "../database/db-students.js";
+import { dbClass } from "../database/db-class.js";
+import { dbTeachers } from "../database/teachers.js";
+import { v4 as uuidv4 } from "uuid";
 const router = express.Router();
 router.use(express.json());
 router.post("/students/create", (req, res) => {
+ try{
   const {
     id,
     name,
@@ -15,6 +21,11 @@ router.post("/students/create", (req, res) => {
     teacherId,
     adminId,
   } = req.body;
+  const result=studentSchema.validate(req.body);
+  console.log(result)
+if(!result.error){
+    return res.status(400).send("Bad request ...");
+}else{
   const newStudent = {
     id: uuidv4(),
     name: name,
@@ -24,18 +35,11 @@ router.post("/students/create", (req, res) => {
     nationality: nationality,
     relativePhone: relativePhone,
   };
-  const properAdmin = admins.forEach((a) => a.adminId === adminId);
-  return res.send(properAdmin);
+  dbStudents.push(newStudent);
+  res.status(201).send(dbStudents);  
+}
+ }catch(error){
+  console.log(error)
+ }
 });
-
-// const studentSchema = Joi.object({
-//   id: Joi.string().guid({ version: "uuidv4" }),
-//   name: Joi.string().min(3).max(40).required(),
-//   surname: Joi.string().min(3).max(40).required(),
-//   age: Joi.string().number().required(),
-//   gender: Joi.string().required(),
-//   nationality: Joi.string().min(3).max(50).required(),
-//   relativePhone: Joi.string().number().min(7).required(),
-//   classId: Joi.string().guid({ version: "uuidv4" }),
-//   teacherId: Joi.string().guid({ version: "uuidv4" }),
 export default router;
