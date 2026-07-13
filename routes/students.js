@@ -13,6 +13,7 @@ router.post("/students/create", (req, res) => {
     relativePhone,
     classId,
     teacherId,
+    adminId,
   } = req.body;
   const newStudent = {
     id: uuidv4(),
@@ -23,6 +24,8 @@ router.post("/students/create", (req, res) => {
     nationality: nationality,
     relativePhone: relativePhone,
   };
+  const properAdmin = admins.forEach((a) => a.adminId === adminId);
+  return res.send(properAdmin);
 });
 
 // const studentSchema = Joi.object({
@@ -35,3 +38,4 @@ router.post("/students/create", (req, res) => {
 //   relativePhone: Joi.string().number().min(7).required(),
 //   classId: Joi.string().guid({ version: "uuidv4" }),
 //   teacherId: Joi.string().guid({ version: "uuidv4" }),
+export default router;
