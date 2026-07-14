@@ -66,5 +66,5 @@ router.get("/all/students/:studentId", (req, res) => {
   }
 });
 // =============================================  DELETE STUDENTS =============================================================
-router.delete("/");
+// router.delete("/");
 export default router;

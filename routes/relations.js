@@ -1,33 +1,42 @@
 import express from "express";
-import { admins } from "../database/admins.js";
+import {
+  admins
+} from "../database/admins.js";
 import teacherSchema from "../validations/teacher-schema.js";
-import { dbStudents } from "../database/db-students.js";
-import { dbClass } from "../database/db-class.js";
-import { dbTeachers } from "../database/db-teachers.js";
-import { v4 as uuidv4 } from "uuid";
-import morgan from "morgan";
+import {
+  dbStudents
+} from "../database/db-students.js";
+import {
+  dbClass
+} from "../database/db-class.js";
+import {
+  dbTeachers
+} from "../database/db-teachers.js";
 const router = express.Router();
 router.use(express.json());
 // =============================================  COPY DATA   =====================================================================
-const classContainer = [...dbClass];
-const studentsContainer = [...dbStudents];
-const teachersContainer = [...dbTeachers];
+const classContainer = dbClass;
+const studentsContainer = dbStudents;
+const teachersContainer = dbTeachers;
 // ==========================================   GET teacher`s students  ===========================================================
 router.get("/teachers/:teacherId/students", (req, res) => {
   try {
-    const { teacherId } = req.params;
-    const teacherIdResult = dbTeachers.find((f) => f.id === teacherId);
+    const {
+      teacherId
+    } = req.params;
+    const teacherIdResult = teachersContainer.find((f) => f.id === teacherId);
     if (teacherIdResult) {
-      console.log(filteredStudent);
       const filteredStudent = studentsContainer.filter(
-        (s) => s.teacherId === teacherId,
+        (s) => s.teacherId == teacherId,
       );
-      return res.send(filteredStudent);
+      teacherIdResult.ofStudents = filteredStudent;
+      return res.send(teacherIdResult);
     } else {
-      res.status(404).send("Not found ...");
+      return res.status(404).send("Not found ...");
     }
   } catch (err) {
     console.log(err);
+    return res.status(500).send(err.message);
   }
 });
 
@@ -59,9 +68,24 @@ router.get("/teachers/:teacherId/students", (req, res) => {
 //     }
 // ]
 
-//   let userIncomeData = userCopy.map((user) => {
-//     user.relatedIncome = incomes.filter((income) => user.id === income.userId);
-//     return user;
-//   });
-router.get("/students/:studentId/teachers", (req, res) => {});
+router.get("/students/:studentId/teachers", (req, res) => {
+  try {
+    const {
+      studentId
+    } = req.params;
+    const studentIdResult = studentsContainer.find((f) => f.id === studentId);
+    if (studentIdResult) {
+      const filteredStudent = teachersContainer.filter(
+        (s) => s.id == studentId,
+      );
+      teacherIdResult.ofStudents = filteredStudent;
+      return res.send(teacherIdResult);
+    } else {
+      return res.status(404).send("Not found ...");
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send(err.message);
+  }
+});
 export default router;
