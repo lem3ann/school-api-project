@@ -43,15 +43,26 @@ router.get("/all/class/:classId", (req, res) => {
 // =============================== DELETE A SPECIFIC CLASS ===========================================
 router.delete("/class/deleteClass/:classId", (req, res) => {
   const { classId } = req.params;
-  const currentClass = dbClass.filter((u) => u.id === classId);
-  return res.send(currentClass);
+  const currentClass = dbClass.find((u) => u.id === classId);
+  if (currentClass) {
+    const indexOfClass = dbClass.indexOf(currentClass);
+    dbClass.splice(indexOfClass, 1);
+    return res.send("Deleted class: " + currentClass.name);
+  } else {
+    return res.status(404).send("Class not found ...");
+  }
 });
 
 // ============================ EDIT A SPECIFIC CLASS ===============================================
 router.put("/all/class/edit/:classId", (req, res) => {
-  const { classId, name } = req.body;
+  const { classId } = req.params;
+  const { name } = req.body;
   const currentClass = dbClass.find((u) => u.id === classId);
-  currentClass.name = name;
-  return res.status(200).send(currentClass);
+  if (currentClass) {
+    currentClass.name = name;
+    return res.status(200).send("Class updated ....");
+  } else {
+    res.status(404).send("Class not found  ....");
+  }
 });
 export default router;

@@ -7,7 +7,8 @@ const studentSchema = Joi.object({
   gender: Joi.string().required(),
   nationality: Joi.string().min(3).max(50).required(),
   relativePhone: Joi.string().alphanum().min(7).required(),
-  classId: Joi.string().guid({ version: "uuidv4" }),
-  teacherId: Joi.string().guid({ version: "uuidv4" }),
+  classId: Joi.string().guid({ version: "uuidv4" }).required(),
+  adminId: Joi.string().guid({ version: "uuidv4" }),
+  teacherId: Joi.string().guid({ version: "uuidv4" }).required(),
 });
 export default studentSchema;

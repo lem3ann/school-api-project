@@ -1,4 +1,4 @@
-// root
+// root admins
 export const admins = [
   {
     adminId: "656177ee-faa7-4042-a5e0-a624bc7d3651",
@@ -17,7 +17,7 @@ export const admins = [
   },
   {
     adminId: "eb295cdd-3aa7-4bdb-9329-65fcb827e353",
-    username: "Jala",
+    username: "root",
     password: "123456",
-  }
+  },
 ];
