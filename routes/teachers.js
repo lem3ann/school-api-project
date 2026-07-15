@@ -84,5 +84,4 @@ router.put("/teachers/edit/:teacherId", (req, res) => {
     return res.status(400).send("Teacher not found ...");
   }
 });
-
 export default router;

@@ -66,5 +66,52 @@ router.get("/all/students/:studentId", (req, res) => {
   }
 });
 // =============================================  DELETE STUDENTS =============================================================
-// router.delete("/");
+router.delete("/students/deleteStudent/:studentId", (req, res) => {
+  try {
+    const { studentId } = req.body;
+    const currentStudent = dbStudents.find((s) => s.id === studentId);
+    if (currentStudent) {
+      const indexOfStudent = dbStudents.indexOf(currentStudent);
+      (dbStudents, splice(indexOfStudent, 1));
+      return res.status(200).send("User deleted  ... ");
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(404).send("User not found !");
+  }
+});
+//  ========================================  EDIT STUDENTS =======================================================
+router.put("/student/edit/:studentId", (req, res) => {
+  try {
+    const { studentId } = req.body;
+    const { name, surname, age, gender, nationality, relativePhone } = req.body;
+    const currentStudent = dbStudents.find((s) => s.id === studentId);
+    if (currentStudent) {
+      editedStudent.name = name;
+      editedStudent.surname = surname;
+      editedStudent.age = age;
+      editedStudent.gender = gender;
+      editedStudent.nationality = nationality;
+      editedStudent.phone = relativePhone;
+      return res.status(200).send("Student updated");
+    } else {
+      res.status(404).send("Not found ...");
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).send("Bad request ...");
+  }
+});
 export default router;
+// const studentSchema = Joi.object({
+//   id: Joi.string().guid({ version: "uuidv4" }),
+//   name: Joi.string().min(3).max(40).required(),
+//   surname: Joi.string().min(3).max(40).required(),
+//   age: Joi.string().alphanum().required(),
+//   gender: Joi.string().required(),
+//   nationality: Joi.string().min(3).max(50).required(),
+//   relativePhone: Joi.string().alphanum().min(7).required(),
+//   classId: Joi.string().guid({ version: "uuidv4" }).required(),
+//   adminId: Joi.string().guid({ version: "uuidv4" }),
+//   teacherId: Joi.string().guid({ version: "uuidv4" }).required(),
+// });
